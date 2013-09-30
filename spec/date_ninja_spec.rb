@@ -1,11 +1,31 @@
 require "date_ninja"
 
-describe DateNinja::DateDojo do
-  it "check date is a string" do
-  	DateNinja::DateDojo.date_kung_fu("2013/03/05").should eql("string_date")
+describe DateDojo::DateSensei do
+  it "checks that string dates are correct" do
+  	DateDojo::DateSensei.date_format_validation("05/05/2013").should == "05/05/2013".to_date
   end
 
-  it "check date is anything else" do
-  	DateNinja::DateDojo.date_kung_fu("2013/03/05".to_i).should eql("numeric_date")
+  it "checks that string dates are in the correct format" do
+  	DateDojo::DateSensei.date_format_validation("2013/03/05").should  == "the date needs to be in the following format dd/mm/yyyy"
+  end
+
+  it "checks that string numeric values are correct" do
+  	DateDojo::DateSensei.date_format_validation("56140").should == Date.new(1900,1,1) + "56140".to_i - 2
+  end
+
+  it "checks that string numeric values from incorrect formats" do
+  	DateDojo::DateSensei.date_format_validation("654585").should  == "the date needs to be in the following format dd/mm/yyyy"
+  end
+
+  it "checks that numeric values make up the correct date formats" do
+  	DateDojo::DateSensei.date_format_validation(56140).should == Date.new(1900,1,1) + 56138
+  end
+
+  it "checks that numeric values make up the correct date formats" do
+  	DateDojo::DateSensei.date_format_validation(654585).should == "the date needs to be in the following format dd/mm/yyyy"
+  end
+
+  it "any dates passed into rails will be saved in the correct format returns same date" do
+  	DateDojo::DateSensei.date_format_validation(Date.today).should == Date.today
   end
 end
