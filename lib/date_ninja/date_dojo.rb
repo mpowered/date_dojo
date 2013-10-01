@@ -20,7 +20,7 @@ module DateDojo
   		elsif self.is_numeric? and (37892..56142).cover?(self.to_i)
   			return Date.new(1900,1,1) + self.to_i - 2
   		else
-  			return "the date needs to be in the following format dd/mm/yyyy"
+  			raise "incorrect date format"
   		end
   	end
   end
@@ -30,7 +30,7 @@ module DateDojo
   		if (37892..56142).cover?(self.to_i)
   			Date.new(1900,1,1) + self.to_i - 2
   		else
-  			return "the date needs to be in the following format dd/mm/yyyy"
+  			raise "incorrect date format"
   		end
   	end
   end

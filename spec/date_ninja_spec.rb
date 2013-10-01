@@ -6,7 +6,7 @@ describe DateDojo::DateSensei do
   end
 
   it "checks that string dates are in the correct format" do
-  	DateDojo::DateSensei.date_format_validation("2013/03/05").should  == "the date needs to be in the following format dd/mm/yyyy"
+  	expect { DateDojo::DateSensei.date_format_validation("2013/03/05") }.to raise_error("incorrect date format")
   end
 
   it "checks that string numeric values are correct" do
@@ -14,7 +14,7 @@ describe DateDojo::DateSensei do
   end
 
   it "checks that string numeric values from incorrect formats" do
-  	DateDojo::DateSensei.date_format_validation("654585").should  == "the date needs to be in the following format dd/mm/yyyy"
+  	expect { DateDojo::DateSensei.date_format_validation("654585") }.to raise_error("incorrect date format")
   end
 
   it "checks that numeric values make up the correct date formats" do
@@ -22,7 +22,7 @@ describe DateDojo::DateSensei do
   end
 
   it "checks that numeric values make up the correct date formats" do
-  	DateDojo::DateSensei.date_format_validation(654585).should == "the date needs to be in the following format dd/mm/yyyy"
+  	expect { DateDojo::DateSensei.date_format_validation(654585) }.to raise_error("incorrect date format")
   end
 
   it "any dates passed into rails will be saved in the correct format returns same date" do
