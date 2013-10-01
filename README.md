@@ -1,6 +1,6 @@
 # DateNinja
 
-TODO: Write a gem description
+Date ninja can validate the format of the date recived from excel sources. so if excel parses the data into either a string, fixnum or date it will return a date, or it will return an exception
 
 ## Installation
 
@@ -18,7 +18,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+where ever you need to get a date in the correct format just pass it to the DateNinja::DateDojo.date_format_validation(date) method. it will return a date object if the data from excel is in the correct format
 
 ## Contributing
 
