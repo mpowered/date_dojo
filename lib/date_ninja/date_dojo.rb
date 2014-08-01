@@ -15,7 +15,7 @@ module DateDojo
     end
 
     def convert_to_date
-      if /^\d{2}.\d{2}.\d{4}|^\d{4}.\d{2}.\d{2}/.match(self)
+      if /^\d{2}.\d{2}.\d{4}$|^\d{4}.\d{2}.\d{2}$/.match(self)
         return self.to_date
       elsif self.is_numeric? and (37892..56142).cover?(self.to_i)
         return Date.new(1900,1,1) + self.to_i - 2
