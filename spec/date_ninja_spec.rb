@@ -6,7 +6,7 @@ describe DateDojo::DateSensei do
   end
 
   it "checks that string dates are in the correct format" do
-  	expect { DateDojo::DateSensei.date_format_validation("2013/03/05") }.to raise_error("incorrect date format")
+  	expect { DateDojo::DateSensei.date_format_validation("20113/03/05") }.to raise_error("incorrect date format")
   end
 
   it "checks that string numeric values are correct" do
