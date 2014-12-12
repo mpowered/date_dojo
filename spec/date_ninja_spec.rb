@@ -28,4 +28,8 @@ describe DateDojo::DateSensei do
   it "any dates passed into rails will be saved in the correct format returns same date" do
   	DateDojo::DateSensei.date_format_validation(Date.today).should == Date.today
   end
+
+  it "checks that dates with cross formatted dates that cant be parsed to raise an error" do
+    expect { DateDojo::DateSensei.date_format_validation("27-08.2014") }.to raise_error("incorrect date format")
+  end
 end

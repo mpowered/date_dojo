@@ -14,9 +14,17 @@ module DateDojo
       Float self rescue false
     end
 
+    def check_to_see_if_it_can_convert_to_date
+      begin
+        self.to_date
+      rescue TypeError
+        raise "incorrect date format"
+      end
+    end
+
     def convert_to_date
       if /^\d{2}\D\d{2}\D\d{4}$|^\d{4}\D\d{2}\D\d{2}$/.match(self)
-        return self.to_date
+        return self.check_to_see_if_it_can_convert_to_date
       elsif self.is_numeric? and (37892..56142).cover?(self.to_i)
         return Date.new(1900,1,1) + self.to_i - 2
       else
@@ -40,8 +48,15 @@ module DateDojo
       self
     end
   end
+
+  module FloatExtension
+    def convert_to_date
+      raise "incorrect date format"
+    end
+  end
 end
 
+Float.send(:include, DateDojo::FloatExtension)
 String.send(:include, DateDojo::StringExtension)
 Fixnum.send(:include, DateDojo::FixnumExtension)
 Date.send(:include, DateDojo::DateExtension)
