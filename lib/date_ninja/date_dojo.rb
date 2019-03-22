@@ -10,6 +10,10 @@ module DateDojo
   end
 
   module StringExtension
+    LOCAL_START_OF_TIME_IN_DAYS = 37_892
+    LOCAL_END_OF_TIME_IN_DAYS   = 56_142
+    DAY_OFFSET                  = 2
+
     def is_numeric?
       Float self rescue false
     end
@@ -25,8 +29,8 @@ module DateDojo
     def convert_to_date
       if /^\d{2}\D\d{2}\D\d{4}$|^\d{4}\D\d{2}\D\d{2}$/.match(self)
         return self.check_to_see_if_it_can_convert_to_date
-      elsif self.is_numeric? and (37892..56142).cover?(self.to_i)
-        return Date.new(1900,1,1) + self.to_i - 2
+      elsif self.is_numeric? and (LOCAL_START_OF_TIME_IN_DAYS..LOCAL_END_OF_TIME_IN_DAYS).cover?(self.to_i)
+        return Date.new(1900, 1, 1) + self.to_i - DAY_OFFSET
       else
         raise "incorrect date format"
       end
@@ -34,12 +38,14 @@ module DateDojo
   end
 
   module FixnumExtension
+    LOCAL_START_OF_TIME_IN_DAYS = 37_892
+    LOCAL_END_OF_TIME_IN_DAYS   = 56_142
+    DAY_OFFSET                  = 2
+
     def convert_to_date
-      if (37892..56142).cover?(self.to_i)
-        Date.new(1900,1,1) + self.to_i - 2
-      else
-        raise "incorrect date format"
-      end
+      raise "incorrect date format" unless (LOCAL_START_OF_TIME_IN_DAYS..LOCAL_END_OF_TIME_IN_DAYS).cover?(self.to_i)
+
+      Date.new(1900, 1, 1) + self.to_i - DAY_OFFSET
     end
   end
 
@@ -56,7 +62,7 @@ module DateDojo
   end
 end
 
-Float.send(:include, DateDojo::FloatExtension)
+Float.send(:include,  DateDojo::FloatExtension)
 String.send(:include, DateDojo::StringExtension)
 Fixnum.send(:include, DateDojo::FixnumExtension)
-Date.send(:include, DateDojo::DateExtension)
+Date.send(:include,   DateDojo::DateExtension)
