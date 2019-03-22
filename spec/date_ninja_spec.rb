@@ -18,18 +18,18 @@ describe DateDojo::DateSensei do
   end
 
   it "checks that numeric values make up the correct date formats" do
-    DateDojo::DateSensei.date_format_validation(56140).should == Date.new(1900,1,1) + 56138
+    DateDojo::DateSensei.date_format_validation(56_140).should == Date.new(1900, 1, 1) + 56_138
   end
 
   it "checks that numeric values make up the correct date formats" do
-    expect { DateDojo::DateSensei.date_format_validation(654585) }.to raise_error("incorrect date format")
+    expect { DateDojo::DateSensei.date_format_validation(654_585) }.to raise_error("incorrect date format")
   end
 
   it "any dates passed into rails will be saved in the correct format returns same date" do
     DateDojo::DateSensei.date_format_validation(Date.today).should == Date.today
   end
 
-  it "checks that dates with cross formatted dates that cant be parsed to raise an error" do
+  it "checks that dates with cross formatted dates that cant be parsed will raise an error" do
     expect { DateDojo::DateSensei.date_format_validation("27-08.2014") }.to raise_error("incorrect date format")
   end
 end
