@@ -2,7 +2,7 @@ require "date_ninja/version"
 require "date"
 
 module DateDojo
-  # if the date passed in meets the requriements it will be returned as a date. if not a string will be passed
+  # if the date passed in meets the requirements it will be returned as a date. if not a string will be passed
   class DateSensei
     def self.date_format_validation(date)
       date.convert_to_date
@@ -10,36 +10,61 @@ module DateDojo
   end
 
   module StringExtension
-    def is_numeric?
-      Float self rescue false
-    end
-
-    def check_to_see_if_it_can_convert_to_date
-      begin
-        self.to_date
-      rescue TypeError
-        raise "incorrect date format"
-      end
-    end
+    LOCAL_START_OF_TIME_IN_DAYS = 37_892
+    LOCAL_END_OF_TIME_IN_DAYS   = 56_142
+    DAY_OFFSET                  = 2
 
     def convert_to_date
-      if /^\d{2}\D\d{2}\D\d{4}$|^\d{4}\D\d{2}\D\d{2}$/.match(self)
-        return self.check_to_see_if_it_can_convert_to_date
-      elsif self.is_numeric? and (37892..56142).cover?(self.to_i)
-        return Date.new(1900,1,1) + self.to_i - 2
-      else
-        raise "incorrect date format"
-      end
+      return convert_string_to_date!                  if string_date_ok?
+      return Date.new(1900, 1, 1) + to_i - DAY_OFFSET if numeric_date_ok?
+
+      raise "incorrect date format"
+    end
+
+    private
+
+    def sanitize_date_separators
+      gsub(/\D/, '-')
+    end
+
+    def numeric_date_ok?
+      is_numeric? && (LOCAL_START_OF_TIME_IN_DAYS..LOCAL_END_OF_TIME_IN_DAYS).cover?(to_i)
+    end
+
+    def string_date_ok?
+      self =~ /^\d{2}\D\d{2}\D\d{4}$|^\d{4}\D\d{2}\D\d{2}$/
+    end
+
+    def is_numeric?
+      Float self
+    rescue ArgumentError
+      false
+    end
+
+    def convert_string_to_date!
+      my_date_string = sanitize_date_separators
+
+      my_date_string.to_date # This is an ActiveSupport 3.2 method...
+    rescue TypeError
+      raise "incorrect date format"
     end
   end
 
   module FixnumExtension
+    LOCAL_START_OF_TIME_IN_DAYS = 37_892
+    LOCAL_END_OF_TIME_IN_DAYS   = 56_142
+    DAY_OFFSET                  = 2
+
     def convert_to_date
-      if (37892..56142).cover?(self.to_i)
-        Date.new(1900,1,1) + self.to_i - 2
-      else
-        raise "incorrect date format"
-      end
+      raise "incorrect date format" unless numeric_date_ok?
+
+      Date.new(1900, 1, 1) + to_i - DAY_OFFSET
+    end
+
+    private
+
+    def numeric_date_ok?
+      (LOCAL_START_OF_TIME_IN_DAYS..LOCAL_END_OF_TIME_IN_DAYS).cover?(to_i)
     end
   end
 
@@ -56,7 +81,7 @@ module DateDojo
   end
 end
 
-Float.send(:include, DateDojo::FloatExtension)
+Float.send(:include,  DateDojo::FloatExtension)
 String.send(:include, DateDojo::StringExtension)
 Fixnum.send(:include, DateDojo::FixnumExtension)
-Date.send(:include, DateDojo::DateExtension)
+Date.send(:include,   DateDojo::DateExtension)
