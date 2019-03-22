@@ -29,7 +29,7 @@ describe DateDojo::DateSensei do
     DateDojo::DateSensei.date_format_validation(Date.today).should == Date.today
   end
 
-  it "checks that dates with cross formatted dates that cant be parsed will raise an error" do
-    expect { DateDojo::DateSensei.date_format_validation("27-08.2014") }.to raise_error("incorrect date format")
+  it "checks that dates with cross formatted dates that can be parsed will return a date" do
+    expect(DateDojo::DateSensei.date_format_validation("27-08.2014")).to eq Date.parse("2014-08-27")
   end
 end
