@@ -2,7 +2,7 @@ require "date_ninja/version"
 require "date"
 
 module DateDojo
-  # if the date passed in meets the requriements it will be returned as a date. if not a string will be passed
+  # if the date passed in meets the requirements it will be returned as a date. if not a string will be passed
   class DateSensei
     def self.date_format_validation(date)
       date.convert_to_date
