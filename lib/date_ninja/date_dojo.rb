@@ -50,7 +50,7 @@ module DateDojo
     end
   end
 
-  module FixnumExtension
+  module IntegerExtension
     LOCAL_START_OF_TIME_IN_DAYS = 37_892
     LOCAL_END_OF_TIME_IN_DAYS   = 56_142
     DAY_OFFSET                  = 2
@@ -81,7 +81,7 @@ module DateDojo
   end
 end
 
-Float.send(:include,  DateDojo::FloatExtension)
-String.send(:include, DateDojo::StringExtension)
-Fixnum.send(:include, DateDojo::FixnumExtension)
-Date.send(:include,   DateDojo::DateExtension)
+Float.send(:include,   DateDojo::FloatExtension)
+String.send(:include,  DateDojo::StringExtension)
+Integer.send(:include, DateDojo::IntegerExtension)
+Date.send(:include,    DateDojo::DateExtension)
